@@ -1,0 +1,41 @@
+{
+  "atomCode": "maven",
+  "name": "Maven",
+  "version": "1.0.0",
+  "description": "把 maven-plugin 变成一个原子：跑 mvn goals，退出码即构建结果。",
+  "execution": {
+    "packagePath": "maven.jar",
+    "language": "java",
+    "target": "$atom_java_path -cp maven.jar MavenAtom"
+  },
+  "input": {
+    "goals": {
+      "label": "goals（如 clean verify）",
+      "type": "vuex-input",
+      "default": "verify"
+    },
+    "options": {
+      "label": "额外参数（如 -DskipTests -Pci）",
+      "type": "vuex-input",
+      "default": ""
+    },
+    "home": {
+      "label": "mvn 安装目录（留空则用 PATH 或 $MAVEN_HOME）",
+      "type": "vuex-input",
+      "default": ""
+    },
+    "failOnError": {
+      "label": "非零退出码视为构建失败",
+      "type": "checkbox",
+      "default": "true"
+    }
+  },
+  "output": {
+    "exitCode": { "type": "string", "description": "mvn 的退出码" },
+    "durationMs": { "type": "string", "description": "耗时（毫秒）" }
+  },
+  "x-jenkins": {
+    "protocol": "jenkins-1",
+    "requires": { "runner": ">=0.3.0" }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Maven",
+  "summary": "把 maven-plugin 变成一个原子：跑 mvn goals，退出码即构建结果。",
+  "author": "hummerstudio",
+  "license": "MIT",
+  "tags": ["build-tool", "official-port"],
+  "homepage": "https://github.com/hummerstudio/jenkins-atom-maven"
+}
