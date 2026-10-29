@@ -22,7 +22,7 @@ chmod +x "$bin/mvn"
 
 run() { # run <dir>
   local dir="$1"
-  ( cd "$dir" && PATH="$bin:$PATH" atom_data_dir="$dir" atom_data_input=input.json \
+  ( cd "$dir" && unset MAVEN_HOME && PATH="$bin:$PATH" atom_data_dir="$dir" atom_data_input=input.json \
       atom_data_output=output.json atom_workspace="$dir" BUILD_NUMBER=7 \
       "$java_bin" -cp "$jar" MavenAtom )
 }
