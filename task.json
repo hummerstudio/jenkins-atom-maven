@@ -1,7 +1,7 @@
 {
   "atomCode": "maven",
   "name": "Maven",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "把 maven-plugin 变成一个原子：跑 mvn goals，退出码即构建结果。",
   "execution": {
     "packagePath": "maven.jar",
