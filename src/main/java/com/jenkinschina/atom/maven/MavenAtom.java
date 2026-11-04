@@ -33,6 +33,12 @@ public class MavenAtom implements AtomTask {
         command.add(binary(home));
         command.addAll(split(goals));
         command.addAll(split(options));
+        // mvn colours its output only for a terminal; here stdout is a pipe, so ask for the colour anyway — the runner
+        // turns the ANSI sequences into markup, and a plain log would otherwise lose the one signal Maven is loudest with
+        if (command.stream().noneMatch(option -> option.startsWith("-Dstyle.color"))
+                && command.stream().noneMatch(option -> option.startsWith("-Dmaven.color.force"))) {
+            command.add("-Dstyle.color=always");
+        }
 
         long started = System.currentTimeMillis();
         ProcessBuilder builder =
