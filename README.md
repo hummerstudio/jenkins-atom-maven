@@ -16,11 +16,11 @@ The plugin variants each re-implement tool discovery, environment setup and resu
 is one file you can read in a minute, it appears in the atom center with a form, and a pipeline calls it with
 `runAtom(atom: 'maven', version: '1.0.0', inputs: [goals: 'clean build'])`.
 
-## Build and smoke test
+## Build and test
 
 ```bash
-./build.sh             # → dist/maven/{maven.jar,task.json}
-./tools/smoke.sh       # fake mvn on PATH: arguments, workspace, exit code, tolerate mode, PATH fallback
+mvn verify             # → dist/maven/{maven.jar,task.json}; MavenIT puts a fake mvn on PATH
+                       #   (arguments, workspace, exit code, tolerate mode, PATH fallback)
 ```
 
 ## Publish
