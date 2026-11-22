@@ -1,31 +1,18 @@
-# jenkins-atom-maven
+# Merged into `build-tool`
 
-The [maven-plugin](https://plugins.jenkins.io/maven-plugin/) plugin (≈96k installations) as an **atom**: one Java file,
-no plugin.
+这个原子已并入 [`build-tool`](https://github.com/hummerstudio/jenkins-atom-build-tool)：三个类原本只差三个常量
+（二进制名、`*_HOME`、默认 goals），差异现在是一个参数。
 
-Runs `mvn <goals> <options>` in the job workspace and reports the exit code. The plugin's value was never the
-wrapping — it was the tool, the log streaming and the fail-on-error rule, all of which are a few lines here.
+原调用：
 
-* `goals` / `options` — `${ENV}` is expanded, so `-Dbuild=${BUILD_NUMBER}` works.
-* `home` — a `mvn` install directory; empty means PATH, then `$MAVEN_HOME`.
-* `failOnError` — default on; off keeps the exit code as an output and lets the build continue.
-
-## Why an atom and not the plugin
-
-The plugin variants each re-implement tool discovery, environment setup and result mapping, and they drift. This atom
-is one file you can read in a minute, it appears in the atom center with a form, and a pipeline calls it with
-`runAtom(atom: 'maven', version: '1.0.0', inputs: [goals: 'clean build'])`.
-
-## Build and test
-
-```bash
-mvn verify             # → dist/maven/{maven.jar,task.json}; MavenIT puts a fake mvn on PATH
-                       #   (arguments, workspace, exit code, tolerate mode, PATH fallback)
+```groovy
+runAtom(atom: 'maven', version: '1.latest', inputs: [...])
 ```
 
-## Publish
+现在的等价写法：
 
-```bash
-tools/publish-atom.sh --center <center-dir> --atom-dir dist/maven --version 1.0.0 \
-    --key key.pem --key-id <keyId>     # tools/ 来自 jenkins-atom-plugin 仓库
+```groovy
+runAtom(atom: 'build-tool', version: '1.latest', inputs: [tool: 'maven', ...])
 ```
+
+输入名不变（`goals` / `options` / `home` / `failOnError`）。本仓库只读保留，便于历史构建追溯。
