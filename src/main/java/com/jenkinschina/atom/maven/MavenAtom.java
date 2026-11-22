@@ -9,21 +9,46 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * mvn as an atom, written against the SDK: run {@code mvn <goals> <options>} in the job workspace and report the
- * exit code. Tool discovery, log streaming and the fail-on-error rule are the whole plugin; the SDK handles the
- * contract around them.
+ * Maven as an atom, written against the SDK, with two verbs:
+ *
+ * <ul>
+ *   <li>{@code action=build} (the default, and what this atom was): run {@code mvn <goals> <options>} in the job
+ *       workspace and report the exit code. Tool discovery, log streaming and the fail-on-error rule are the whole
+ *       step; the SDK handles the contract around them.
+ *   <li>{@code action=resolve}: fetch artifacts by coordinate from a Maven repository and put them in the workspace.
+ *       That is {@link MavenResolve}, the atom {@code maven-resolve} 1.0.0, moved here unchanged -- both verbs are
+ *       Maven and a second atom would only have to re-explain Maven.
+ * </ul>
  */
 public class MavenAtom implements AtomTask {
+
+    /** What {@code action} accepts; also what an unknown one is told to use. */
+    static final List<String> ACTIONS = List.of("build", "resolve");
 
     private static final String TOOL = "mvn";
     private static final String TOOL_HOME = "MAVEN_HOME";
 
     @Override
     public AtomResult run(AtomContext context) throws Exception {
+        String action = context.getParam("action", "build").trim().toLowerCase(Locale.ROOT);
+        if (action.isEmpty()) {
+            action = "build";
+        }
+        if (!ACTIONS.contains(action)) {
+            return AtomResult.error(ErrorType.USER, 40014,
+                    "action '" + action + "' is not supported; use one of " + String.join(" / ", ACTIONS));
+        }
+        return "resolve".equals(action) ? MavenResolve.run(context) : build(context);
+    }
+
+    // ------------------------------------------------------------------ build
+
+    private AtomResult build(AtomContext context) throws Exception {
         String goals = expand(context, context.getParam("goals", "verify"));
         String options = expand(context, context.getParam("options", ""));
         String home = context.getParam("home", "");

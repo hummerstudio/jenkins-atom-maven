@@ -13,6 +13,6 @@
 
   <artifactId>maven</artifactId>
   <name>Maven</name>
-  <description>把 maven-plugin 变成一个原子：跑 mvn goals，退出码即构建结果。</description>
+  <description>把 maven-plugin 变成一个原子：action=build 跑 mvn goals，退出码即构建结果；action=resolve 按 GAV 从 Maven 仓库下载构件到工作区（仓库布局、RELEASE/LATEST/SNAPSHOT、校验和策略、Basic 凭据）。</description>
 
 </project>

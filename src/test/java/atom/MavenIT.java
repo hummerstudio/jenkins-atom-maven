@@ -80,6 +80,19 @@ class MavenIT {
     }
 
     @Test
+    @DisplayName("an unknown action names the ones that exist instead of guessing")
+    void unknownActionNamesBoth() throws Exception {
+        AtomResult run = atom.input("{\"action\": \"deploy\", \"failOnError\": \"true\"}").run();
+
+        run.assertRefused();
+        assertEquals("40014", run.field("errorCode"), "an unknown action is 40014:\n" + run);
+        assertEquals("1", run.field("errorType"), "an unknown action is the caller's mistake:\n" + run);
+        assertTrue(run.field("message").contains("'deploy'"), "the message must repeat what was asked for: " + run.field("message"));
+        assertTrue(run.field("message").contains("build / resolve"),
+                "the message must list the actions that exist: " + run.field("message"));
+    }
+
+    @Test
     @DisplayName("an unknown home falls back to PATH instead of crashing")
     void unknownHomeFallsBackToPath() throws Exception {
         AtomResult run = atom.bin("mvn", FAKE_MVN)

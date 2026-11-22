@@ -1,8 +1,12 @@
 {
   "name": "Maven",
-  "summary": "把 maven-plugin 变成一个原子：跑 mvn goals，退出码即构建结果。",
+  "summary": "maven-plugin 的移植（build：跑 mvn goals）加上 repository-connector 的解析侧（resolve：按 GAV 取构件，含 RELEASE/LATEST/SNAPSHOT、校验和策略与目标目录复制）。",
   "author": "hummerstudio",
   "license": "MIT",
-  "tags": ["build-tool", "official-port"],
+  "tags": [
+    "build-tool",
+    "official-port",
+    "repository-connector"
+  ],
   "homepage": "https://github.com/hummerstudio/jenkins-atom-maven"
 }
