@@ -281,6 +281,7 @@
       "40012": "resolve：落盘后回读的 SHA-1 与下载字节不符（磁盘或插件问题）",
       "40013": "resolve：请求超时；加大 timeoutSeconds",
       "40014": "action 不认识；用 build 或 resolve"
-    }
+    },
+    "category": "build"
   }
 }
